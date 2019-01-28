@@ -7,18 +7,20 @@
 class Unit
 {
     public:
-        Unit(sf::Texture *texture, sf::RenderWindow *window);
+        Unit();
+        Unit(sf::Texture *texture);
 
-        void setPosition(sf::Vector2i newPos);
-        sf::Vector2i getPosition();
+        void setTexture(sf::Texture *texture);
+        sf::Sprite getSprite();
 
-        void drawSprite();
+        void setPosition(sf::Vector2f newPosition);
+        sf::Vector2f getPosition();
+
 
     private:
         sf::Texture *_texture;
-        sf::RenderWindow *_window;
         sf::Sprite _sprite;
-        sf::Vector2i _position;
+        sf::Vector2f _position;
 };
 
 #endif // UNIT_H

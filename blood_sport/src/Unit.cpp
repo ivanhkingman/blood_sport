@@ -1,25 +1,37 @@
 #include "Unit.h"
 
-Unit::Unit(sf::Texture *texture, sf::RenderWindow *window) :
+Unit::Unit() :
+    _position(200, 100)
+{}
+
+Unit::Unit(sf::Texture *texture) :
     _texture(texture),
-    _window(window)
+    _position(200, 100)
 {
     _sprite.setTexture(*_texture);
     _sprite.setPosition(200, 100);
 }
 
-void Unit::setPosition(sf::Vector2i newPos)
+void Unit::setTexture(sf::Texture *texture)
 {
-    _position = newPos;
+    _texture = texture;
+    _sprite.setTexture(*texture);
+    _sprite.setPosition(200, 100);
 }
 
-sf::Vector2i Unit::getPosition()
+void Unit::setPosition(sf::Vector2f newPosition)
+{
+    _position = newPosition;
+    _sprite.setPosition(newPosition);
+}
+
+sf::Vector2f Unit::getPosition()
 {
     return _position;
 }
 
-void Unit::drawSprite()
+sf::Sprite Unit::getSprite()
 {
-    _window->draw(_sprite);
+    return _sprite;
 }
 
