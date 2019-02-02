@@ -4,10 +4,18 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <list>
 
-#include "Unit.h"
+#include <map>
 #include <iostream>
+#include <memory>
+
+#include "ECS.h"
+#include "ResourceManager.h"
+#include "InputManager.h"
+
+#include "Components/Components.h"
+#include "Entities/UnitEntity.h"
+#include "Systems/Systems.h"
 
 
 class Game
@@ -23,20 +31,15 @@ class Game
 
     private:
         void handleEvents();
-        void handleKeyPress(sf::Keyboard::Key key);
-        void handleKeyRelease(sf::Keyboard::Key key);
-        void updateGame();
 
-        sf::RenderWindow _window;
-        std::list<sf::Sprite*> _sprites;
+        sf::RenderWindow m_window;
 
-        bool _keyPressA;
-        bool _keyPressD;
-        bool _keyPressW;
-        bool _keyPressS;
+        ResourceManager m_resourceManager;
+        InputManager m_inputManager;
+        EntityManager m_entityManager;
 
-        sf::Texture _heroTexture;
-        Unit _hero;
+        SpriteSystem m_spriteSys;
+        MovementSystem m_movementSys;
 };
 
 #endif // GAME_H

@@ -5,79 +5,56 @@ const int Game::windowHeight    = 600;
 const int Game::frameRate       = 30;
 
 Game::Game() :
-    _window(sf::VideoMode(windowWidth, windowHeight), "Blood Sport"),
-    _keyPressA(false), _keyPressD(false), _keyPressW(false), _keyPressS(false),
-    _heroTexture(), _hero()
+    m_window(sf::VideoMode(windowWidth, windowHeight), "Blood Sport"),
+    m_resourceManager(),
+    m_inputManager(),
+    m_entityManager(),
+    m_spriteSys(&m_entityManager, &m_window),
+    m_movementSys(&m_entityManager, &m_inputManager)
 {
     // Create a unit
-    _heroTexture.loadFromFile("testImage.png");
-    _hero.setTexture(&_heroTexture);
+    m_resourceManager.addTexture("testImage.png", "Hero");
+    m_entityManager.addEntity<UnitEntity>(&m_resourceManager.getTexture("Hero"));
 }
 
 void Game::start() {
 
-
-
-    float timePerFrameMS = 1000/float(frameRate);
+    sf::Time timePerFrameMS = sf::milliseconds(1000/float(frameRate));
 
     sf::Clock gameClock;
-    while(_window.isOpen()) {
+    while(m_window.isOpen()) {
         gameClock.restart();
 
         handleEvents();
-        updateGame();
 
-        _window.clear();
+        m_window.clear();
         // -- Render loop --
-        _window.draw(_hero.getSprite());
-        _window.display();
+        m_spriteSys.update();
+        m_movementSys.update();
+        m_window.display();
 
-        while(gameClock.getElapsedTime().asMilliseconds() <= timePerFrameMS) {
+
+        sf::Time timeToNextFrame = timePerFrameMS - gameClock.getElapsedTime();
+        if(timeToNextFrame > sf::milliseconds(0)) {
+            sf::sleep(timeToNextFrame);
         }
+        //std::cout << "Frame update" << std::endl;
     }
 }
 
 
 void Game::handleEvents() {
     sf::Event event;
-    while(_window.pollEvent(event)) {
-        switch(event.type) {
-            case sf::Event::Closed:
-                _window.close();
-                break;
-
-            case sf::Event::KeyPressed:
-                handleKeyPress(event.key.code);
-                break;
-
-            case sf::Event::KeyReleased:
-                handleKeyRelease(event.key.code);
-                break;
-
-            default:
-                break;
+    while(m_window.pollEvent(event)) {
+        if(event.type == sf::Event::Closed) {
+            m_window.close();
+        }
+        else if(event.type == sf::Event::KeyPressed) {
+            m_inputManager.keyPress(event);
+        }
+        else if(event.type == sf::Event::KeyReleased) {
+            m_inputManager.keyRelease(event);
         }
     }
 }
 
-
-void Game::handleKeyPress(sf::Keyboard::Key key) {
-    if(key == sf::Keyboard::A)      _keyPressA = true;
-    else if(key == sf::Keyboard::D) _keyPressD = true;
-    else if(key == sf::Keyboard::W) _keyPressW = true;
-    else if(key == sf::Keyboard::S) _keyPressS = true;
-}
-
-void Game::handleKeyRelease(sf::Keyboard::Key key) {
-    if     (key == sf::Keyboard::A) _keyPressA = false;
-    else if(key == sf::Keyboard::D) _keyPressD = false;
-    else if(key == sf::Keyboard::W) _keyPressW = false;
-    else if(key == sf::Keyboard::S) _keyPressS = false;
-}
-
-void Game::updateGame() {
-    if(_keyPressA)  _hero.setPosition(_hero.getPosition() + sf::Vector2f(-20,0));
-    if(_keyPressD)  _hero.setPosition(_hero.getPosition() + sf::Vector2f(20,0));
-    if(_keyPressW)  _hero.setPosition(_hero.getPosition() + sf::Vector2f(0,-20));
-    if(_keyPressS)  _hero.setPosition(_hero.getPosition() + sf::Vector2f(0,20));
-}
