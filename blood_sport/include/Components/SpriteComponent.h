@@ -4,22 +4,22 @@
 #include "ECS.h"
 #include <SFML/Graphics.hpp>
 
-class SpriteComponent : public Component {
-public:
-    sf::Sprite sprite;
+namespace ComponentType {
 
-    SpriteComponent(sf::Texture* texture) {
-        _texture = texture;
-        sprite.setTexture(*_texture);
-        sprite.setPosition(0, 0);
-    }
+    class Sprite : public Component {
+    public:
+        sf::Sprite sprite;
 
-    void update() override {}
+        Sprite(sf::Texture* texture) {
+            _texture = texture;
+            sprite.setTexture(*_texture);
+            sprite.setPosition(0, 0);
+        }
 
-private:
-    sf::Texture* _texture;
+    private:
+        sf::Texture* _texture;
 
-
-};
+    };
+}
 
 #endif // SPRITECOMPONENT_H_INCLUDED

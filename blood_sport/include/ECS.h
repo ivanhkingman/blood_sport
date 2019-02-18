@@ -25,7 +25,6 @@ inline int getComponentTypeID() {
 class Component {
 public:
     virtual ~Component() {}
-    virtual void update() {}
     void setOwner(Entity* owner) {m_owner = owner;}
 
 private:
@@ -36,7 +35,6 @@ class Entity {
 
 public:
     Entity() {std::cout << "--- New entity created ---" << std::endl;}
-    void update() {for(auto& i : m_components) i.second->update();}
 
     template <typename ComponentType, typename... TypeArgs>
     void addComponent(TypeArgs&&... args) {
@@ -63,8 +61,6 @@ private:
 
 class EntityManager {
 public:
-    void update() {}
-
     template <typename EntityType, typename... TypeArgs>
     void addEntity(TypeArgs&&... args) {
         auto newEntity = new EntityType(std::forward<TypeArgs>(args)...);

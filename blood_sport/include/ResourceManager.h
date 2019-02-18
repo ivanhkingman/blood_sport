@@ -2,6 +2,7 @@
 #define RESOURCEMANAGER_H
 
 #include <SFML/Graphics.hpp>
+
 #include <map>
 #include <memory>
 

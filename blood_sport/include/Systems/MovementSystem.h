@@ -1,10 +1,11 @@
 #ifndef MOVEMENTSYSTEM_H_INCLUDED
 #define MOVEMENTSYSTEM_H_INCLUDED
 
-#include "ECS.h"
-#include "Components/Components.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+
+#include "ECS.h"
+#include "Components/Components.h"
 
 class MovementSystem : ECSSystem {
 public:
@@ -14,23 +15,24 @@ public:
         {}
 
     void update() override {
-        auto entityList = m_entityManager->filterEntities<MovementSpeedComponent>();
-        for(auto i : entityList) {
-            if(i->hasComponent<SpriteComponent>() && i->hasComponent<PositionComponent>()) {
-                auto& positionComp = i->getComponent<PositionComponent>();
-                auto& spriteComp = i->getComponent<SpriteComponent>();
-                auto& movementSpeedComp = i->getComponent<MovementSpeedComponent>();
+        auto entityList = m_entityManager->filterEntities<ComponentType::MovementSpeed>();
+        for(auto entity : entityList) {
+            if(entity->hasComponent<ComponentType::Sprite>() && entity->hasComponent<ComponentType::Position>()) {
+                auto& positionComp = entity->getComponent<ComponentType::Position>();
+                auto& spriteComp = entity->getComponent<ComponentType::Sprite>();
+                auto& movementSpeedComp = entity->getComponent<ComponentType::MovementSpeed>();
 
-                if(i->hasComponent<PlayableComponent>()) {
+                positionComp.previousPosition = positionComp.position;
+
+                if(entity->hasComponent<ComponentType::Playable>()) {
                     auto inputStates = m_inputManager->getKeyStates();
                     if(inputStates[sf::Keyboard::A]) positionComp.position -= sf::Vector2f(movementSpeedComp.movementSpeed ,0);
                     if(inputStates[sf::Keyboard::D]) positionComp.position += sf::Vector2f(movementSpeedComp.movementSpeed ,0);
                     if(inputStates[sf::Keyboard::W]) positionComp.position -= sf::Vector2f(0, movementSpeedComp.movementSpeed);
                     if(inputStates[sf::Keyboard::S]) positionComp.position += sf::Vector2f(0, movementSpeedComp.movementSpeed);
-                    spriteComp.sprite.setPosition(positionComp.position);
                 }
                 else {
-                    positionComp.position += sf::Vector2f(movementSpeedComp.movementSpeed ,0);
+                    positionComp.position += sf::Vector2f(movementSpeedComp.movementSpeed, 0);
                     spriteComp.sprite.setPosition(positionComp.position);
                 }
             }

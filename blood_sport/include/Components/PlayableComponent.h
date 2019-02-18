@@ -1,12 +1,14 @@
 #ifndef PLAYABLECOMPONENT_H_INCLUDED
 #define PLAYABLECOMPONENT_H_INCLUDED
 
-class PlayableComponent : public Component {
-public:
-    PlayableComponent() {}
+namespace ComponentType {
 
-    void update() override {}
+    class Playable : public Component {
+    public:
+        Playable() {}
 
-};
+    };
+
+}
 
 #endif // PLAYABLECOMPONENT_H_INCLUDED

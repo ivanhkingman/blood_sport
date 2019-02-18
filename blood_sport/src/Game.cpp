@@ -1,7 +1,7 @@
 #include "Game.h"
 
-const int Game::windowWidth     = 800;
-const int Game::windowHeight    = 600;
+const int Game::windowWidth     = 1400;
+const int Game::windowHeight    = 800;
 const int Game::frameRate       = 30;
 
 Game::Game() :
@@ -10,11 +10,21 @@ Game::Game() :
     m_inputManager(),
     m_entityManager(),
     m_spriteSys(&m_entityManager, &m_window),
-    m_movementSys(&m_entityManager, &m_inputManager)
+    m_movementSys(&m_entityManager, &m_inputManager),
+    m_collisionSys(&m_entityManager)
 {
+    m_spriteSys.drawCollisionBoxes(true);
     // Create a unit
     m_resourceManager.addTexture("testImage.png", "Hero");
     m_entityManager.addEntity<UnitEntity>(&m_resourceManager.getTexture("Hero"));
+
+    m_entityManager.addEntity<PathBlockerEntity>(0, 0, windowWidth, 10);
+    m_entityManager.addEntity<PathBlockerEntity>(0, windowHeight-10, windowWidth, 10);
+    m_entityManager.addEntity<PathBlockerEntity>(0, 0, 10, windowHeight);
+    m_entityManager.addEntity<PathBlockerEntity>(windowWidth-10, 0, 10, windowHeight);
+
+    m_entityManager.addEntity<PathBlockerEntity>(500, 500, 100, 100);
+
 }
 
 void Game::start() {
@@ -29,8 +39,9 @@ void Game::start() {
 
         m_window.clear();
         // -- Render loop --
-        m_spriteSys.update();
         m_movementSys.update();
+        m_collisionSys.update();
+        m_spriteSys.update();
         m_window.display();
 
 

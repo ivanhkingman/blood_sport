@@ -4,14 +4,18 @@
 #include "ECS.h"
 #include "SFML/System.hpp"
 
-class PositionComponent : public Component {
-public:
-    sf::Vector2f position;
+namespace ComponentType {
 
-    PositionComponent(float x, float y) : position(x, y) {}
+    class Position : public Component {
+    public:
+        sf::Vector2f position;
+        sf::Vector2f previousPosition;
 
-    void update() override {}
+        Position(float x, float y) :
+            position(x, y),
+            previousPosition(x, y)
+            {}
 
-};
-
+    };
+}
 #endif // POSITIONCOMPONENT_H_INCLUDED

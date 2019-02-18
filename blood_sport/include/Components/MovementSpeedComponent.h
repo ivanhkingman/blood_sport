@@ -1,14 +1,15 @@
 #ifndef MOVEMENTSPEEDCOMPONENT_H_INCLUDED
 #define MOVEMENTSPEEDCOMPONENT_H_INCLUDED
 
-class MovementSpeedComponent : public Component {
-public:
-    float movementSpeed;
+namespace ComponentType {
 
-    MovementSpeedComponent(float speed) : movementSpeed(speed) {}
+    class MovementSpeed : public Component {
+    public:
+        float movementSpeed;
 
-    void update() override {}
+        MovementSpeed(float speed) : movementSpeed(speed) {}
 
-};
+    };
+}
 
 #endif // MOVEMENTSPEEDCOMPONENT_H_INCLUDED

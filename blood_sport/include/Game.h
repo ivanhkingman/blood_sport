@@ -9,12 +9,12 @@
 #include <iostream>
 #include <memory>
 
-#include "ECS.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
-
-#include "Components/Components.h"
+#include "ECS.h"
 #include "Entities/UnitEntity.h"
+#include "Entities/PathBlockerEntity.h"
+#include "Components/Components.h"
 #include "Systems/Systems.h"
 
 
@@ -40,6 +40,7 @@ class Game
 
         SpriteSystem m_spriteSys;
         MovementSystem m_movementSys;
+        CollisionSystem m_collisionSys;
 };
 
 #endif // GAME_H

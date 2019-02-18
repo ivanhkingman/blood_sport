@@ -8,10 +8,12 @@
 class UnitEntity : public Entity {
 public:
     UnitEntity(sf::Texture* texture) {
-        this->addComponent<SpriteComponent>(texture);
-        this->addComponent<PlayableComponent>();
-        this->addComponent<PositionComponent>(200, 200);
-        this->addComponent<MovementSpeedComponent>(10);
+        this->addComponent<ComponentType::Sprite>(texture);
+        this->addComponent<ComponentType::ShapeRect>(250, 340);
+        this->addComponent<ComponentType::Playable>();
+        this->addComponent<ComponentType::Position>(200, 300);
+        this->addComponent<ComponentType::MovementSpeed>(20);
+        this->addComponent<ComponentType::Collision>();
     }
 };
 
